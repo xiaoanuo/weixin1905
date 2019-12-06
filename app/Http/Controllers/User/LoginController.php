@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Redis
 class LoginController extends Controller
 {
     public function addUser()
@@ -23,4 +22,5 @@ class LoginController extends Controller
         $uid = UserModel::insertGetId($data);
         var_dump($uid);
     }
+
 }

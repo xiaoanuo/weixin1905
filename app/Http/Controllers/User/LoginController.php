@@ -18,8 +18,9 @@ class LoginController extends Controller
            'password' =>  $password,
             'email' => $email,
         ];
-    }
- 
 
+        $uid = UserModel::insertGetId($data);
+        var_dump($uid);
+    }
 
 }

@@ -23,4 +23,8 @@ class LoginController extends Controller
         var_dump($uid);
     }
 
+    public function index(){
+        echo 11;
+    }
+
 }

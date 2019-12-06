@@ -23,8 +23,10 @@ class LoginController extends Controller
         var_dump($uid);
     }
 
-    public function index(){
-        echo 11;
+    public function  index(Request $request)
+    {
+        $echostr = $request -> input('echostr');
+        echo $echostr;die;
     }
 
 }

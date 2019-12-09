@@ -18,5 +18,6 @@ Route::get('/', function () {
 Route::any('user/addUser','User\\LoginController@addUser');
 
 
-
+//微信开发
+Route::get('wx','WeiXin\\WxController@wechat');
 

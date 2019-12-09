@@ -33,8 +33,10 @@ class WxController extends Controller
     /**
      * 接受微信推送事件
      */
-    public function weixin(Request $request)
+    public function wx(Request $request)
     {
+        $echostr = $request -> input('echostr');
+        echo $echostr;die;
 
         $log_file = "wx.log";  //public
         //将接受的数据记录到日志文件

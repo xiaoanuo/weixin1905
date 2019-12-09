@@ -20,6 +20,5 @@ Route::any('user/addUser','User\\LoginController@addUser');
 
 Route::any('weixin/token','WeiXin\\WxController@access_tonken');
 Route::any('weixin/userinfo','WeiXin\\WxController@getUserInfo');
-Route::any('weixin/index','WeiXin\\WxController@index');
-Route::any('weixin','WeiXin\\WxController@weixin');
+Route::any('/index','WeiXin\\WxController@index');
 

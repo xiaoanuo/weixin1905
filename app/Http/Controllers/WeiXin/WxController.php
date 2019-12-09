@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 
 class WxController extends Controller
 {
-    public function weixin(Request $request)
-    {
-        $echostr = $request -> input('echostr');
-        echo $echostr;die;
-    }
+
     /**
      * 获取access_token
      */
@@ -34,6 +30,8 @@ class WxController extends Controller
      */
     public function index(Request $request)
     {
+        $echostr = $request -> input('echostr');
+        echo $echostr;die;
         $log_file = "wx.log";  //public
         //将接受的数据记录到日志文件
         $xml = file_get_contents("php://input");

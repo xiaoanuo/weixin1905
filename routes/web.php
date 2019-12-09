@@ -20,4 +20,5 @@ Route::any('user/addUser','User\\LoginController@addUser');
 
 //微信开发
 Route::get('wx','WeiXin\\WxController@wechat');
+Route::post('wx','WeiXin\\WxController@receiv');   //接受微信的推送事件
 

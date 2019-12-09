@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class WxController extends Controller
 {
+
+    public function  index(Request $request)
+    {
+        $echostr = $request -> input('echostr');
+        echo $echostr;die;
+    }
     /**
      * 获取access_token
      */

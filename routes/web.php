@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::any('user/index','User\\LoginController@index');
 Route::any('user/addUser','User\\LoginController@addUser');
 Route::any('user/index','User\\LoginController@index');
+
+Route::any('weixin/token','WeiXin\\WxController@access_tonken');
+Route::any('weixin/userinfo','WeiXin\\WxController@getUserInfo');

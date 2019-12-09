@@ -19,6 +19,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        "user/index",           //忽略当前路由的csrf验证
+        "wx",           //忽略当前路由的csrf验证
     ];
 }

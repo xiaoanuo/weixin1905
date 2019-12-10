@@ -73,7 +73,7 @@ class WxController extends Controller
     /**
      * 获取用户基本信息
      */
-    public function getUserInfo($openid,$access_token)
+    public function getUserInfo($access_token,$openid)
     {
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN";
         //发送网络请求

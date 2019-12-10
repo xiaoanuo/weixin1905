@@ -64,7 +64,7 @@ class WxController extends Controller
         if($event == 'subscribe'){
             $openid = $xml_obj->FromUserName;          //获取用户的openid
             //获取用户信息
-            $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN";
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
             $user_info = file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
         }
@@ -75,7 +75,7 @@ class WxController extends Controller
      */
     public function getUserInfo($access_token,$openid)
     {
-        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN";
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         //发送网络请求
         $json_str = file_get_contents($url);
         $log_file = 'wx_user.log';

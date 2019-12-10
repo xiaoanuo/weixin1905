@@ -102,4 +102,9 @@ class WxController extends Controller
     }
 
 
+    public function  ddd()
+    {
+        echo "小阿剑";
+    }
+
 }

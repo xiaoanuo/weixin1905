@@ -104,7 +104,7 @@ class WxController extends Controller
 
     public function  ddd()
     {
-        echo "小阿剑";
+        echo "小阿剑de大保健纳？？？";
     }
 
 }

@@ -77,13 +77,13 @@ class WxController extends Controller
 
         if($msg_type == 'text'){
             $content = date('Y-m-d H:i:s') . $xml_obj->Content;
-            $respon_text = "<xml>
+            $respon_text = '<xml>
               <ToUserName><![CDATA['.$toUser.']]></ToUserName>
               <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
               <CreateTime>'.$time.'</CreateTime>
               <MsgType><![CDATA[text]]></MsgType>
               <Content><![CDATA['.$content.']]></Content> 
-            </xml>";
+            </xml>';
                 echo $respon_text;   //回复用户消息
         }
 
@@ -101,18 +101,5 @@ class WxController extends Controller
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
 
-    public function xmlTest()
-    {
-        $xml_str ="<xml>
-                <ToUserName><![CDATA[gh_e13db5deb51b]]></ToUserName>
-                <FromUserName><![CDATA[oGVH1wM5F47tnb-oCC4d4qt96PjM]]></FromUserName>
-                <CreateTime>1575938343</CreateTime>
-                <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA[1]]></Content>
-                <MsgId>22562010039059398</MsgId>
-                </xml>";
-        $xml_arr = simplexml_load_string($xml_str);
-        var_dump($xml_arr);
-    }
 
 }

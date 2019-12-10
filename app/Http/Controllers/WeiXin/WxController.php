@@ -35,9 +35,9 @@ class WxController extends Controller
      */
     public function receiv()
     {
-        $log_file = "wx.log";
+        $log_file = "wx.log";     //public
         //将接受的数据记录到日志文件
-        $data = json_encode($_POST);
+        $data = date('Y-m-d','H:i:s').json_encode($_POST);
         file_put_contents($log_file,$data,FILE_APPEND);     //追加写入
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\WeiXin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Model\WxUserModel;
 class WxController extends Controller
 {
     protected $access_token;
@@ -56,7 +56,6 @@ class WxController extends Controller
         //将接受的数据记录到日志文件
         $data = date('Y-m-d H:i:s') . $xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);     //追加写入
-
         //处理xml数据
         $xml_obj = simplexml_load_string($xml_str);
 
@@ -67,6 +66,25 @@ class WxController extends Controller
             $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
             $user_info = file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
+            $data = json_decode($user_info);
+
+            $nickname = $data->nickname;
+
+//            var_dump($nickname);die;
+            $p = WxUserModel::where(['openid'=>$openid])->first();
+            if($p){
+              echo "欢迎.$nickname.回来";die;
+            }
+            $user_data = [
+                'openid' => $openid,
+                'sub_time' => $xml_obj->CreateTime,
+                'nickname' => $data->nickname,
+                'sex' => $data->sex
+            ];
+            //openid  入库
+            $uid = WxUserModel::insertGetId($user_data);
+            echo "$nickname.关注成功";
+
         }
 
         //判断消息类型

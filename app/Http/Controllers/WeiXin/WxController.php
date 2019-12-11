@@ -66,24 +66,23 @@ class WxController extends Controller
             $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
             $user_info = file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
-            $data = json_decode($user_info);
-
-            $nickname = $data->nickname;
+            $data = json_decode($user_info,true);
+            $nickname = $data['nickname'];
 
 //            var_dump($nickname);die;
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-              echo "欢迎.$nickname.回来";die;
+              echo "欢迎".$nickname."回家";die;
             }
             $user_data = [
                 'openid' => $openid,
                 'sub_time' => $xml_obj->CreateTime,
-                'nickname' => $data->nickname,
-                'sex' => $data->sex
+                'nickname' => $data['nickname'],
+                'sex' => $data['sex']
             ];
             //openid  入库
             $uid = WxUserModel::insertGetId($user_data);
-            echo "$nickname.关注成功";
+            echo $nickname."、关注成功";
 
         }
 

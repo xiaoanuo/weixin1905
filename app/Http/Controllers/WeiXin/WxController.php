@@ -64,42 +64,41 @@ class WxController extends Controller
 //        dd($event);
         if($event == 'subscribe'){
             $openid = $xml_obj->FromUserName;          //获取用户的openid
-            $fromUser = $xml_obj->ToUserName;            //开发者ID
-            $time = time();
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-                $content ="欢迎回家";
-                echo "<xml>
+                $msg ="欢迎回家";
+               $xml = '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
-                          <CreateTime>'.$time.'</CreateTime>
+                          <FromUserName><![CDATA['.$xml_obj->fromUser.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA['.$content.']]></Content>
-                        </xml>";die;
+                          <Content><![CDATA['.$msg.']]></Content>
+                        </xml>';
+               echo $xml;
             }else{
                 //获取用户信息
                 $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
-
                 $user_info = file_get_contents($url);
-                file_put_contents('wx_user.log',$user_info,FILE_APPEND);
                 $data = json_decode($user_info,true);
                 $nickname = $data['nickname'];
                 $user_data = [
                     'openid' => $openid,
                     'sub_time' => $xml_obj->CreateTime,
                     'nickname' => $data['nickname'],
-                    'sex' => $data['sex']
+                    'sex' => $data['sex'],
+                    'headimgurl' => $data['headimgurl']
                 ];
                 //openid  入库
                 $uid = WxUserModel::insertGetId($user_data);
-                $content ='欢迎'.$nickname.'关注成功';
-                echo "<xml>
+                $msg ='欢迎'.$nickname.'关注成功';
+                $xml = '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
-                          <CreateTime>'.$time.'</CreateTime>
+                          <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
                           <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA['.$content.']]></Content>
-                        </xml>";
+                          <Content><![CDATA['.$msg.']]></Content>
+                        </xml>';
+                echo $xml;
             }
         }
 

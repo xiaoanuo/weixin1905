@@ -52,6 +52,7 @@ class WxController extends Controller
     public function receiv()
     {
         $log_file = "wx.log";     //public
+
         $xml_str = file_get_contents("php://input");
         //将接受的数据记录到日志文件
         $data = date('Y-m-d H:i:s') . $xml_str;
@@ -60,21 +61,29 @@ class WxController extends Controller
         $xml_obj = simplexml_load_string($xml_str);
 
         $event = $xml_obj->Event;   //获取事件类型
+//        dd($event);
         if($event == 'subscribe'){
             $openid = $xml_obj->FromUserName;          //获取用户的openid
-            //获取用户信息
-            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
-            $user_info = file_get_contents($url);
-            file_put_contents('wx_user.log',$user_info,FILE_APPEND);
-            $data = json_decode($user_info,true);
-            json_encode($data);
-            $nickname = $data['nickname'];
-//            dd($nickname);
-//            var_dump($nickname);die;
+            $fromUser = $xml_obj->ToUserName;            //开发者ID
+            $time = time();
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-              echo "欢迎".$nickname."回家";die;
+                $content ="欢迎回家";
+                echo "<xml>
+                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
+                          <CreateTime>'.$time.'</CreateTime>
+                          <MsgType><![CDATA[text]]></MsgType>
+                          <Content><![CDATA['.$content.']]></Content>
+                        </xml>";die;
             }else{
+                //获取用户信息
+                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
+
+                $user_info = file_get_contents($url);
+                file_put_contents('wx_user.log',$user_info,FILE_APPEND);
+                $data = json_decode($user_info,true);
+                $nickname = $data['nickname'];
                 $user_data = [
                     'openid' => $openid,
                     'sub_time' => $xml_obj->CreateTime,
@@ -83,10 +92,19 @@ class WxController extends Controller
                 ];
                 //openid  入库
                 $uid = WxUserModel::insertGetId($user_data);
-                echo $nickname."、关注成功";
+                $content ='欢迎'.$nickname.'关注成功';
+                echo "<xml>
+                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
+                          <CreateTime>'.$time.'</CreateTime>
+                          <MsgType><![CDATA[text]]></MsgType>
+                          <Content><![CDATA['.$content.']]></Content>
+                        </xml>";
             }
-
         }
+
+
+
 
         //判断消息类型
         $msg_type = $xml_obj->MsgType;

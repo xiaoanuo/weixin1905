@@ -67,22 +67,24 @@ class WxController extends Controller
             $user_info = file_get_contents($url);
             file_put_contents('wx_user.log',$user_info,FILE_APPEND);
             $data = json_decode($user_info,true);
+            json_encode($data);
             $nickname = $data['nickname'];
-
+//            dd($nickname);
 //            var_dump($nickname);die;
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
               echo "欢迎".$nickname."回家";die;
+            }else{
+                $user_data = [
+                    'openid' => $openid,
+                    'sub_time' => $xml_obj->CreateTime,
+                    'nickname' => $data['nickname'],
+                    'sex' => $data['sex']
+                ];
+                //openid  入库
+                $uid = WxUserModel::insertGetId($user_data);
+                echo $nickname."、关注成功";
             }
-            $user_data = [
-                'openid' => $openid,
-                'sub_time' => $xml_obj->CreateTime,
-                'nickname' => $data['nickname'],
-                'sex' => $data['sex']
-            ];
-            //openid  入库
-            $uid = WxUserModel::insertGetId($user_data);
-            echo $nickname."、关注成功";
 
         }
 

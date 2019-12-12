@@ -92,12 +92,12 @@ class WxController extends Controller
                 $uid = WxUserModel::insertGetId($user_data);
                 $msg ='欢迎'.$nickname.'关注成功';
                 $xml = '<xml>
-                          <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                          <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
-                          <CreateTime>'.time().'</CreateTime>
-                          <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA['.$msg.']]></Content>
-                        </xml>';
+                      <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                      <FromUserName><![CDATA['.$xml_obj->ToUserName.']]></FromUserName>
+                      <CreateTime>'.time().'</CreateTime>
+                      <MsgType><![CDATA[text]]></MsgType>
+                      <Content><![CDATA['.$msg.']]></Content>
+                    </xml>';
                 echo $xml;
             }
         }

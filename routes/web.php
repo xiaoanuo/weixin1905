@@ -11,16 +11,6 @@
 |
 */
 
-//Route::get('/', function () {
-//    $file_name = "adc.mp3";
-//    $info = pathinfo(
-//        $file_name
-//    );
-//
-//    echo $file_name . '的文件扩展为：' . pathinfo($file_name)['extension'];die;
-//        echo '<pre>';print_r($info);echo '</pre>';die;
-//});
-
 Route::get('/', function () {
     phpinfo();
 });

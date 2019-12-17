@@ -28,32 +28,40 @@ class WxUserController extends AdminController
 
         $grid->column('uid', __('Uid'));
         $grid->column('openid', __('Openid'));
-        $grid->column('sub_time', __('Sub time'));
-        $grid->column('sex', __('Sex'));
-        $grid->column('nickname', __('Nickname'));
+        $grid->column('subscribe_time', __('关注时间'))->display(function($time){
+            return date('Y-m-d H:i:s',$time);
+        });
+        $grid->column('sex', __('性别'))->display(function($sex){
+            if ($sex==1){
+                return "男";
+            }elseif($sex==2){
+                return "女";
+            }else{
+                return "保密";
+            }
+        });
+        $grid->column('nickname', __('微信昵称'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
+        $grid->column('headimgurl', __('头像'))->display(function($img){
+            return '<img src="'.$img.'">';
+        });
 
         return $grid;
     }
 
-    /**
-     * Make a show builder.
-     *
-     * @param mixed $id
-     * @return Show
-     */
     protected function detail($id)
     {
         $show = new Show(WxUserModel::findOrFail($id));
 
         $show->field('uid', __('Uid'));
         $show->field('openid', __('Openid'));
-        $show->field('sub_time', __('Sub time'));
+        $show->field('subscribe_time', __('Subscribe time'));
         $show->field('sex', __('Sex'));
         $show->field('nickname', __('Nickname'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
+        $show->field('headimgurl', __('Headimgurl'));
 
         return $show;
     }
@@ -67,10 +75,12 @@ class WxUserController extends AdminController
     {
         $form = new Form(new WxUserModel);
 
-        $form->text('openid', __('Openid'));
-        $form->number('sub_time', __('Sub time'));
-        $form->switch('sex', __('Sex'));
+        $form->number('uid', __('Uid'));
+        //$form->text('openid', __('Openid'));
+        //$form->number('subscribe_time', __('Subscribe time'));
+        //$form->switch('sex', __('Sex'));
         $form->text('nickname', __('Nickname'));
+        //$form->text('headimgurl', __('Headimgurl'));
 
         return $form;
     }

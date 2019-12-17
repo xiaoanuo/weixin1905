@@ -246,7 +246,7 @@ class WxController extends Controller
         $log_file = 'wx_user.log';
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
-    
+
 
 
 }

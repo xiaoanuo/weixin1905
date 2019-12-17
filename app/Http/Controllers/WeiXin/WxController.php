@@ -178,9 +178,9 @@ class WxController extends Controller
         //获取素材内容
         $data = file_get_contents($url);
         //获取文件扩展名
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_info = fifo_file($finfo,$data);    //返回一个文件信息
-        var_dump($file_info);die;
+//        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_info = fifo_file($data);    //返回一个文件信息
+//        var_dump($file_info);die;
         $extension = '.' . pathinfo($data)['extension'];
         //保存文件
         $save_path = 'wx_media/';

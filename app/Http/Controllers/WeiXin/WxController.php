@@ -88,8 +88,9 @@ class WxController extends Controller
 
         $event = $xml_obj->Event;   //获取事件类型
 //        dd($event);
+        $openid = $xml_obj->FromUserName;          //获取用户的openid
         if($event == 'subscribe'){
-            $openid = $xml_obj->FromUserName;          //获取用户的openid
+
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
                 $msg ="欢迎回家";
@@ -126,6 +127,17 @@ class WxController extends Controller
                       <Content><![CDATA['.$msg.']]></Content>
                     </xml>';
                 echo $xml;
+            }
+        }elseif($event=='CLICK'){           //菜单点击事件
+            //如果是获取天气
+            if($xml_obj->EventKey=='weather'){
+                $response_xml = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName>
+<FromUserName><![CDATA['.$xml_obj->fromUser.']]></FromUserName>
+<CreateTime>'.time().'</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA['.date('Y-m-d H:i:s').  '阴天' .']]></Content>
+</xml>';
+                echo $response_xml;
             }
         }
 
@@ -252,22 +264,24 @@ class WxController extends Controller
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu = [
-            'button'    =>[
+            'button' =>[
                 [
-                    'type'  => 'click',
-                    'name'  => '1905wx',
-                    'key'   => '1905wx_key'
+                    'type' => 'click',
+                    'name' => '获取天气',
+                    'key' => 'weather'
                 ],
             ]
         ];
 
-        $meun_json = json_encode($menu);
-        $client =  new Client();
+        $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
+        $client = new Client();
         $response = $client->request('POST',$url,[
-            'body' => $meun_json
+            'body' => $menu_json
         ]);
 
-        echo $response->getBody();    //接受 微信接口的响应数据
+        echo '<pre>';print_r($menu);echo '</pre>';
+        echo $response->getBody();
+
     }
 
     /**

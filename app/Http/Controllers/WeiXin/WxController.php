@@ -247,5 +247,10 @@ class WxController extends Controller
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
 
+    public function  ddd()
+    {
+        echo   123;
+    }
+
 
 }

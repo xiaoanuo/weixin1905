@@ -15,6 +15,9 @@ Route::get('/', function () {
     phpinfo();
 });
 
+
+Route::any('cs/ddd','WeiXin\\WxController@ddd');
+
 Route::any('user/addUser','User\\LoginController@addUser');
 Route::get('cs/ddd','WeiXin\\WxController@ddd');
 Route::get('test/xml','WeiXin\\WxController@xmlTest');

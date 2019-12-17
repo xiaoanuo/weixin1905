@@ -40,6 +40,16 @@ class WxController extends Controller
     }
 
     /**
+     * 刷新token
+     */
+    public function flushAccessToken()
+    {
+        $key="wexin_access_token";
+        Redis::del($key);
+        echo $this->getAccessToken();
+    }
+
+    /**
      * 处理接入
      */
     public function wechat()
@@ -233,6 +243,31 @@ class WxController extends Controller
             $save_path = $save_path . 'video/' . $file_name;
         }
         file_put_contents($save_path,$file_content);
+    }
+
+    /**
+     * 创建自定义菜单
+     */
+    public function createMenu()
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
+        $menu = [
+            'button'    =>[
+                [
+                    'type'  => 'click',
+                    'name'  => '1905wx',
+                    'key'   => '1905wx_key'
+                ],
+            ]
+        ];
+
+        $meun_json = json_encode($menu);
+        $client =  new Client();
+        $response = $client->request('POST',$url,[
+            'body' => $meun_json
+        ]);
+
+        echo $response->getBody();    //接受 微信接口的响应数据
     }
 
     /**

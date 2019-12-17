@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WeiXin;
 
 use App\Http\Controllers\Controller;
+use http\Client;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 use Illuminate\Support\Facades\Redis;
@@ -142,15 +143,50 @@ class WxController extends Controller
 
             //消息入库
         }elseif($msg_type =='image'){  //图片消息
-                //下载图片
+            // TODO 下载图片
             $this->getMedia2($media_id,$msg_type);
-                //回复图片
+            // TODO 回复图片
+            $response = '<xml>
+                          <ToUserName><![CDATA['.$toUser.']]></ToUserName>
+                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
+                          <MsgType><![CDATA[image]]></MsgType>
+                          <Image>
+                            <MediaId><![CDATA['.$media_id.']]></MediaId>
+                          </Image>
+                        </xml>';
+            echo $response;
 
         }elseif($msg_type == 'voice'){     //语音消息
-                //下载语音
-                $this->getMedia2($media_id,$msg_type);
-                //回复语音
-
+            // 下载语音
+            $this->getMedia2($media_id,$msg_type);
+            // TODO 回复语音
+            $response = '<xml>
+                          <ToUserName><![CDATA['.$toUser.']]></ToUserName>
+                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
+                          <MsgType><![CDATA[voice]]></MsgType>
+                          <Voice>
+                            <MediaId><![CDATA['.$media_id.']]></MediaId>
+                          </Voice>
+                        </xml>';
+            echo $response;
+        }elseif ($msg_type=='video'){
+            // 下载小视频
+            $this->getMedia2($media_id,$msg_type);
+            // 回复
+            $response = '<xml>
+                          <ToUserName><![CDATA['.$toUser.']]></ToUserName>
+                          <FromUserName><![CDATA['.$fromUser.']]></FromUserName>
+                          <CreateTime>'.time().'</CreateTime>
+                          <MsgType><![CDATA[video]]></MsgType>
+                          <Video>
+                            <MediaId><![CDATA['.$media_id.']]></MediaId>
+                            <Title><![CDATA[测试]]></Title>
+                            <Description><![CDATA[不可描述]]></Description>
+                          </Video>
+                        </xml>';
+            echo $response;
         }
 
     }
@@ -176,23 +212,27 @@ class WxController extends Controller
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->access_token.'&media_id='.$media_id;
         //获取素材内容
-        $data = file_get_contents($url);
+        $client = new Client();
+        $response = $client->request('GET',$url);
         //获取文件扩展名
-//        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_info = fifo_file($data);    //返回一个文件信息
-//        var_dump($file_info);die;
-        $extension = '.' . pathinfo($data)['extension'];
-        //保存文件
+        $f = $response->getHeader('Content-disposition')[0];
+        $extension = substr(trim($f,'"'),strpos($f,'.'));
+        //获取文件内容
+        $file_content = $response->getBody();
+        // 保存文件
         $save_path = 'wx_media/';
-        if($media_type=='image'){    //保存圖片
-            $file_name = date('YmdHis').mt_rand(11111,99999).$extension;
+        if($media_type=='image'){       //保存图片文件
+            $file_name = date('YmdHis').mt_rand(11111,99999) . $extension;
             $save_path = $save_path . 'imgs/' . $file_name;
-        }elseif ($media_type=='voice'){
-            $file_name = date('YmdHis').mt_rand(11111,99999).'.amr';
-            $save_path = $save_path . 'voice/' .$file_name;
+        }elseif($media_type=='voice'){  //保存语音文件
+            $file_name = date('YmdHis').mt_rand(11111,99999) . $extension;
+            $save_path = $save_path . 'voice/' . $file_name;
+        }elseif($media_type=='video')
+        {
+            $file_name = date('YmdHis').mt_rand(11111,99999) . $extension;
+            $save_path = $save_path . 'video/' . $file_name;
         }
-
-        file_put_contents($file_name,$data);
+        file_put_contents($save_path,$file_content);
     }
 
     /**

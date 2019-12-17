@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::any('cs/ddd','WeiXin\\WxController@ddd');
+
 
 Route::any('user/addUser','User\\LoginController@addUser');
 Route::get('cs/ddd','WeiXin\\WxController@ddd');

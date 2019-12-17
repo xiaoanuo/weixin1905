@@ -7,6 +7,7 @@ use http\Client;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 use Illuminate\Support\Facades\Redis;
+use GuzzleHttp\Client;
 class WxController extends Controller
 {
     protected $access_token;

@@ -22,7 +22,7 @@ class VoteController extends Controller
         $key = 's:vote:zhangsan';
         Redis::Sadd($key,$openid);
 
-        $menbers = Redis::Smenbers($key);       //获取所有投票人的openid
+        $menbers = Redis::Smembers($key);       //获取所有投票人的openid
         $total = Redis::Scard($key);            //统计投票人数
         echo "投票总人数：".$total;
         echo '<hr>';

@@ -13,6 +13,8 @@ class VoteController extends Controller
         $data = $this->getAccessToken($code);
         //获取用户信息
         $user_info = $this->getUserInfo($data['access_token'],$data['openid']);
+        dd($user_info);
+        //处理业务逻辑
     }
 
     public function  getAccessToken($code)
@@ -32,8 +34,13 @@ class VoteController extends Controller
     {
         $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $json_data = file_get_contents($user_url);
-        $user_info = json_decode($json_data,true);
-        echo '<pre>';print_r($user_info);echo '</pre>';
+        $data =  json_decode($json_data,true);
+        if(isset($data['errcode'])){
+            // 错误处理
+            die('出错啦 40001');     //40001 标识：获取用户信息失败
+        }
+        return $data;   //返回用户信息
+
     }
 
 }

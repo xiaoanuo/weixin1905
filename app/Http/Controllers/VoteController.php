@@ -19,26 +19,29 @@ class VoteController extends Controller
         //判断是否已经投过  使用redis  集合 或有序集合
 
         $openid = $user_info['openid'];
-        $key = 's:vote:zhangsan';
+        $key = 'ss:vote:zhangsan';
 
         //判断是否已经投过票
-        if(Redis::sIsMember($key,$user_info['openid'])){
+        if(Redis::zrank($key,$user_info['openid'])){
             echo '您已经投过、宝贵的一票';
         }else{
-            Redis::Sadd($key,$openid);
+            Redis::Zadd($key,time(),$openid);
         }
 
-        $menbers = Redis::Smembers($key);       //获取所有投票人的openid
-        $total = Redis::Scard($key);            //统计投票人数
-        echo "投票总人数：".$total;
-        echo '<hr>';
-        echo '<pre>';print_r($menbers);echo '</pre>';
-
-        $redis_key = 'vote';
-        $number = Redis::incr($redis_key);    //incr:增加
-        echo "投票成功、当前票数：".$number;
+        $total = Redis::zCard($key);        // 获取总数
+        echo '投票总人数： '.$total;echo '</br>';
+        $members = Redis::zRange($key,0,-1,true);       // 获取所有投票人的openid
+        echo '<pre>';print_r($members);echo '</pre>';
+        foreach($members as $k=>$v){
+            echo "用户： ".$k . ' 投票时间: '. date('Y-m-d H:i:s',$v);echo '</br>';
+        }
     }
 
+    /**
+     * 根据code获取access-token 
+     * @param $code
+     * @return mixed
+     */
     public function  getAccessToken($code)
     {
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_SECRET').'&code='.$code.'&grant_type=authorization_code';

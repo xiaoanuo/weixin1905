@@ -22,7 +22,7 @@ class VoteController extends Controller
         $key = 's:vote:zhangsan';
 
         //判断是否已经投过票
-        if(Redis::sIsMener($key,$user_info['openid'])){
+        if(Redis::sIsMember($key,$user_info['openid'])){
             echo '您已经投过、宝贵的一票';die;
         }
         Redis::Sadd($key,$openid);

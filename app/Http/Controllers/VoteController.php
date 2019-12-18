@@ -9,7 +9,7 @@ class VoteController extends Controller
 {
     public function index()
     {
-        echo '<pre>';print_r($_GET);echo '</pre>';
+//        echo '<pre>';print_r($_GET);echo '</pre>';
         $code = $_GET['code'];
         $data = $this->getAccessToken($code);
         //获取用户信息
@@ -23,9 +23,10 @@ class VoteController extends Controller
 
         //判断是否已经投过票
         if(Redis::sIsMember($key,$user_info['openid'])){
-            echo '您已经投过、宝贵的一票';die;
+            echo '您已经投过、宝贵的一票';
+        }else{
+            Redis::Sadd($key,$openid);
         }
-        Redis::Sadd($key,$openid);
 
         $menbers = Redis::Smembers($key);       //获取所有投票人的openid
         $total = Redis::Scard($key);            //统计投票人数

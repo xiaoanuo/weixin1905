@@ -299,7 +299,6 @@ class WxController extends Controller
 
         echo '<pre>';print_r($menu);echo '</pre>';
         echo $response->getBody();
-
     }
 
     /**

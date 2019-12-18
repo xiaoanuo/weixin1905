@@ -10,6 +10,7 @@ class VoteController extends Controller
     {
         echo '<pre>';print_r($_GET);echo '</pre>';
         $code = $_GET['code'];
+        print_r($code);
         $this->getAccessToken($code);
     }
 

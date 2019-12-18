@@ -290,7 +290,6 @@ class WxController extends Controller
                 ],
             ]
         ];
-
         $menu_json = json_encode($menu,JSON_UNESCAPED_UNICODE);
         $client = new Client();
         $response = $client->request('POST',$url,[

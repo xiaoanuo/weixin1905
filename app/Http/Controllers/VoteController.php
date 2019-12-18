@@ -34,7 +34,7 @@ class VoteController extends Controller
         $user_url = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
         $json_data = file_get_contents($user_url);
         $data =  json_decode($json_data,true);
-        echo '<pre>';print_r($data);echo '</pre>';die;
+//        echo '<pre>';print_r($data);echo '</pre>';die;
         if(isset($data['errcode'])){
             // 错误处理
             die('出错啦 40001');     //40001 标识：获取用户信息失败

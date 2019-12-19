@@ -33,7 +33,7 @@ class VoteController extends Controller
 
         //判断是否已经投过票
         if (Redis::zrank($key, $user_info['openid'])) {
-//            echo '您已经投过、宝贵的一票';
+            echo '您已经投过、宝贵的一票';
         } else {
             Redis::Zadd($key, time(), $openid);
         }

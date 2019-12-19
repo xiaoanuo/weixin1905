@@ -10,14 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/info', function () {
-    phpinfo();
-});
+//Route::get('/info', function () {
+//    phpinfo();
+//});
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
+Route::get('/','Index\\IndexController@index');
 
 
 

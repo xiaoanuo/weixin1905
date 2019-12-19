@@ -39,8 +39,8 @@ class VoteController extends Controller
         foreach ($members as $k => $v) {
             echo "用户： " . $k . ' 投票时间: ' . date('Y-m-d H:i:s', $v);echo '</br>';
             $u_k = 'h:u'.$k;
-            $u = Redis::hMget($u_k,['openid','nikname','sex']);
-            echo '<pre>',print_r($u);echo'</pre>';
+            $u = Redis::hMget($u_k,['openid','nikname','sex','headimgurl']);
+            echo '<pre>',print_r($u);echo'</pre>';echo '<hr>';
             echo '<img src="'.$u['headimgurl'].'">';echo '</br>';
         }
     }

@@ -26,6 +26,7 @@ Route::get('cs/ddd','WeiXin\\WxController@ddd');
 Route::get('test/xml','WeiXin\\WxController@xmlTest');
 
 Route::get('cs/redis','WeiXin\\WxController@test');
+Route::get('dev/redis/del','VoteController@delkey');
 
 //微信开发
 Route::get('wx','WeiXin\\WxController@wechat');

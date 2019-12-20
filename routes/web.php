@@ -40,4 +40,10 @@ Route::get('/wx/flush/access_token','WeiXin\WxController@flushAccessToken');  //
 Route::get('/vote','VoteController@index');    //微信投票
 
 
+//微商城
+Route::get('/goods/detail','Goods\\IndexController@detail');    //商品详情
+
+
+
+
 

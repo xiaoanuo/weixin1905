@@ -76,7 +76,7 @@ class WxMsgController extends AdminController
     }
 
     /**
-     * 刷新token
+     * 刷新access_token
      */
     public function flushAccessToken()
     {

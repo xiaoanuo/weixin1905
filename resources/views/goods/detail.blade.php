@@ -367,11 +367,12 @@
     <div class="container">
         <div class="shop-single">
             <img src="/storage/{{$goods['img']}}" alt="">
-            <h5>{{$goods['good_name']}}</h5>
-            <div class="price">{{$goods['price']}} <span></span></div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam eaque in non delectus, error iste veniam commodi mollitia, officia possimus, repellendus maiores doloribus provident. Itaque, ab perferendis nemo tempore! Accusamus</p>
+            <h5>商品名称：{{$goods['good_name']}}</h5>
+            <div class="price">商品价格：{{$goods['price']}}$ <span></span></div>
+            商品描述：{!! $goods['desc'] !!}
             <button type="button" class="btn button-default">ADD TO CART</button>
         </div>
+
         <div class="review">
             <h5>1 reviews</h5>
             <div class="review-details">

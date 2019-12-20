@@ -68,7 +68,7 @@ class WxGoodsController extends AdminController
         $form->text('good_name', __('Good name'));
         $form->number('price', __('Price'));
         $form->image('img', __('Img'));
-
+        $form->ckeditor('desc');
         return $form;
     }
 }

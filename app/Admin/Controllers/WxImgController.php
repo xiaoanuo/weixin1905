@@ -3,14 +3,13 @@
 namespace App\Admin\Controllers;
 
 use App\Model\WxGoodsModel;
-use App\Model\WxUserModel;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
-class WxMsgController extends AdminController
+class WxImgController extends AdminController
 {
 
     /**
@@ -20,20 +19,19 @@ class WxMsgController extends AdminController
      */
     protected $title = '微信';
 
-    public function sendMsg()
+    public function sendImg()
     {
-        $openid_arr = WxUserModel::select('openid')->get()->toArray();
-
-        $openid = array_column($openid_arr,'openid');
-//        echo '<pre>';print_r($openid);echo '</pre>';
-
+        $openid_arr = WxGoodsModel::select('img')->get();
+        echo '<pre>';print_r($openid_arr);echo '</pre>';
+        $MediaId = "vX6VRjqrTRnwCyPI699jmWZN_0gRb2uNWzDz9OQ6A01ZYlVVOKp7wl-YWgcNn8Iq";
         $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$this->access_token.'';
         $msg = date('Y-m-d H:i:s') . '李剑收到回答';
 
         $data = [
-            'touser'    =>  $openid,
-            'msgtype'   => 'text',
-            'text'       => ['content'=>$msg]
+            'touser'    =>  $openid_arr,
+            'msgtype'   => 'mpnews',
+            'media_id'       => $MediaId,
+            "send_ignore_reprint" => 0
         ];
         $client = new Client();
         $response = $client->request('POST',$url,[
@@ -43,6 +41,7 @@ class WxMsgController extends AdminController
         echo $response->getBody();
 
     }
+
 
 
     protected $access_token;
@@ -84,4 +83,5 @@ class WxMsgController extends AdminController
         Redis::del($key);
         echo $this->getAccessToken();
     }
+
 }

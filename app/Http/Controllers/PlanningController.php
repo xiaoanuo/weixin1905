@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Admin\Controllers;
+namespace App\Http\Controllers;
 
-use App\Model\WxGoodsModel;
-use App\Model\WxUserModel;
-use Encore\Admin\Controllers\AdminController;
-use Encore\Admin\Form;
-use Encore\Admin\Grid;
-use Encore\Admin\Show;
+use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
-class WxMsgController extends AdminController
+use App\Model\WxUserModel;
+class PlanningController extends Controller
 {
-
-    /**
-     * Title for current resource.
-     *
-     * @var string
-     */
-    protected $title = '微信';
-
     public function sendMsg()
     {
-        $openid_arr = WxUserModel::select('openid')->get()->toArray();
+        //请求第三方接口
+        $weather_api = "https://free-api.heweather.net/s6/weather/now?location=beijing&key=9d7786053ece4c4aaf31afcab838007f";
+        $weather_info = file_get_contents($weather_api);
+        $weather_info_arr = json_decode($weather_info,true);
+//                echo '<pre>';print_r($weather_info_arr);echo '</pre>';die;
+        $cond_txt = $weather_info_arr['HeWeather6'][0]['now']['cond_txt'];
+        $tmp = $weather_info_arr['HeWeather6'][0]['now']['tmp'];
+        $wind_dir = $weather_info_arr['HeWeather6'][0]['now']['wind_dir'];
 
+        $msg = '天况：'.$cond_txt.'--'  . '温度：'.$tmp .'--'.'风向：' .$wind_dir;
+        echo $msg;echo "\n";
+
+
+        $openid_arr = WxUserModel::select('openid')->get()->toArray();
         $openid = array_column($openid_arr,'openid');
 //        echo '<pre>';print_r($openid);echo '</pre>';
 
@@ -40,7 +40,7 @@ class WxMsgController extends AdminController
             'body' => json_encode($data,JSON_UNESCAPED_UNICODE)
         ]);
 
-        echo $response->getBody();
+        echo $response->getBody();echo "\n";
 
     }
 

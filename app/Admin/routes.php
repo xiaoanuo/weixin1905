@@ -12,7 +12,9 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->get('/wxsendmsg', 'WxMsgController@sendMsg');
+    $router->get('/wxsendimg', 'WxImgController@sendImg');
     $router->resource('users',WxUserController::class);
     $router->resource('detail',WxGoodsController::class);
+    $router->resource('wx/media/img', WxTypeImg::class);       // 图片素材管理
 
 });

@@ -10,14 +10,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/info', function () {
     phpinfo();
 });
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/','Index\\IndexController@index');
 
 
 
@@ -37,6 +38,18 @@ Route::get('/wx/flush/access_token','WeiXin\WxController@flushAccessToken');  //
 
 //微信公众号
 Route::get('/vote','VoteController@index');    //微信投票
+Route::get('/wx/tasks','PlanningController@sendMsg');    //计划任务
+
+
+//微商城
+Route::get('/goods/detail','Goods\\IndexController@detail');    //商品详情
+
+
+
+//获取tick
+Route::get('/ticked','WeiXin\\WxQRController@ticked');
+
+
 
 
 

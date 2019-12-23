@@ -15,7 +15,7 @@ class WxUserController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Model\WxUserModel';
+    protected $title = '用户列表';
 
     /**
      * Make a grid builder.

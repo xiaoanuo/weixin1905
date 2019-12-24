@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp\Client;
+use Illuminate\Support\Str;
 class WxController extends Controller
 {
     protected $access_token;
@@ -318,7 +319,6 @@ class WxController extends Controller
         $log_file = 'wx_user.log';
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
-
 
 
 }

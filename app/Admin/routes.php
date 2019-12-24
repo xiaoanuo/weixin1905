@@ -15,6 +15,7 @@ Route::group([
     $router->get('/wxsendimg', 'WxImgController@sendImg');
     $router->resource('users',WxUserController::class);
     $router->resource('detail',WxGoodsController::class);
-    $router->resource('wx/media/img', WxTypeImg::class);       // 图片素材管理
+
+    $router->resource('wx/media/img', WxMediaImg::class);       // 图片素材管理
 
 });

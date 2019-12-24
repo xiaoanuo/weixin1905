@@ -44,10 +44,11 @@ Route::get('/wx/tasks','PlanningController@sendMsg');    //计划任务
 //微商城
 Route::get('/goods/detail','Goods\\IndexController@detail');    //商品详情
 
-
-
 //获取tick
 Route::get('/ticked','WeiXin\\WxQRController@ticked');
+
+
+
 
 
 

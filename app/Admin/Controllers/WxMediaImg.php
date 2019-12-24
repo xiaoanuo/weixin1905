@@ -1,13 +1,13 @@
 <?php
 namespace App\Admin\Controllers;
-use App\Model\WxTypeImgModel;
+use App\Model\WxMediaImgModel;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use GuzzleHttp\Client;
 use App\Model\WxUserModel;
-class WxTypeImg extends AdminController
+class WxMediaImg extends AdminController
 {
     /**
      * Title for current resource.
@@ -22,7 +22,7 @@ class WxTypeImg extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new WxTypeImgModel);
+        $grid = new Grid(new WxMediaImgModel);
         $grid->column('id', __('Id'));
         $grid->column('media_id', __('Media id'));
         $grid->column('local_path', __('Local path'))->image();
@@ -38,8 +38,8 @@ class WxTypeImg extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(WxTypeImgModel::findOrFail($id));
-        $show->field('id', __('Id'));
+        $show = new Show(WxMediaImgModel::findOrFail($id));
+        $show->field('mid', __('Id'));
         $show->field('media_id', __('Media id'));
         $show->field('local_path', __('Local path'));
         $show->field('created_at', __('Created at'));
@@ -53,12 +53,12 @@ class WxTypeImg extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new WxTypeImgModel);
+        $form = new Form(new WxMediaImgModel);
         $form->image('local_path', __('图片'))->uniqueName();
         //表单提交保存后回调函数
         $form->saved(function (Form $form) {
             $d = $form->model();
-            //dd($d->id);     //获取自增ID
+//            dd($d->id);     //获取自增ID
             //新增临时素材
             $media_info = $this->mediaUpload(storage_path('app/public/'.$d->local_path),'image');
             $m = json_decode($media_info,true);

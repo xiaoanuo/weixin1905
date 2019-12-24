@@ -48,7 +48,7 @@ Route::get('/goods/detail','Goods\\IndexController@detail');    //商品详情
 Route::get('/ticked','WeiXin\\WxQRController@ticked');
 
 
-
+Route::get('/wx/newyear','WeiXin\WxController@newYear');        //元旦活动页面
 
 
 

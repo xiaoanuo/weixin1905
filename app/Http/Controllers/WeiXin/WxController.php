@@ -321,4 +321,39 @@ class WxController extends Controller
     }
 
 
+
+    //元旦活动
+    public function newYear()
+    {
+        $wx_appid = env('WX_APPID');
+        $noncestr = Str::random(8);
+        $timestamp = time();
+        $url = env('APP_URL') . $_SERVER['REQUEST_URI'];    //当前页面的URL
+        $signature = $this->signature($noncestr,$timestamp,$url);
+
+        $data = [
+            'appid'         => $wx_appid,
+            'timestamp'     => $timestamp,
+            'noncestr'      => $noncestr,
+            'signature'     => $signature
+        ];
+
+        return view('weixin.newyear',$data);
+    }
+    // 计算jsapi签名
+    public function signature($noncestr,$timestamp,$url)
+    {
+        $noncestr = $noncestr;
+        // 1 获取 jsapi ticket
+        $ticket = WxUserModel::getJsapiTicket();
+        // 拼接带签名字符串
+        $string1 = "jsapi_ticket={$ticket}&noncestr={$noncestr}&timestamp={$timestamp}&url={$url}";
+        // sha1
+        return  sha1($string1);
+    }
+
+
+
+
+
 }

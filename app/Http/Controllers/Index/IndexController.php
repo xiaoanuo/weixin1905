@@ -7,29 +7,48 @@ use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 class IndexController extends Controller
 {
+//    public function index()
+//    {
+//        $code = $_GET['code'];
+//        $data = $this->getAccessToken($code);
+//        //判断用户是否已经存在
+//        $openid = $data['openid'];
+//        $u = WxUserModel::where(['openid'=>$openid])->first();
+//        if($u){   //用户已存在
+//            $user_info = $u->toArray();
+//        }else{
+//            //获取用户信息
+//            $user_info = $this->getUserInfo($data['access_token'], $data['openid']);
+//            //入库用户信息
+//            WxUserModel::insertGetId($user_info);
+//        }
+//
+//        $data = [
+//            'u' => $user_info
+//        ];
+//        return view('index.index',$data);
+//    }
+
+
     public function index()
     {
-        $code = $_GET['code'];
-        $data = $this->getAccessToken($code);
-        //判断用户是否已经存在
-        $openid = $data['openid'];
-        $u = WxUserModel::where(['openid'=>$openid])->first();
-        if($u){   //用户已存在
-            $user_info = $u->toArray();
-        }else{
-            //获取用户信息
-            $user_info = $this->getUserInfo($data['access_token'], $data['openid']);
-            //入库用户信息
-            WxUserModel::insertGetId($user_info);
-        }
-
+        //微信配置
+        $nonceStr = Str::random(8);
+        $wx_config = [
+            'appId'     => env('WX_APPID'),
+            'timestamp' => time(),
+            'nonceStr'  => $nonceStr,
+        ];
+        $ticket = WxUserModel::getJsapiTicket();        // 获取 jsapi_ticket
+        $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
+        $jsapi_signature = WxUserModel::jsapiSign($ticket,$url,$wx_config); //计算签名
+        $wx_config['signature'] = $jsapi_signature;
         $data = [
-            'u' => $user_info
+            //'u'         => $user_info,
+            'wx_config' => $wx_config
         ];
         return view('index.index',$data);
     }
-
-
 
 
     /**

@@ -94,7 +94,11 @@ class WxController extends Controller
 
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-                $msg ="欢迎回家";
+                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$openid.'&lang=zh_CN';
+                $user_info = file_get_contents($url);
+                $data = json_decode($user_info,true);
+                $nickname = $data['nickname'];
+                $msg ='欢迎'.$nickname.'回家';
                 $xml = '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->fromUser.']]></FromUserName>

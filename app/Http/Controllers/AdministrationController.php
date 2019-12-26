@@ -2,21 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\KcModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 class AdministrationController extends Controller
 {
     public function index()
     {
-//        echo '<pre>';print_r($_GET);echo '</pre>';die;
+        echo '<pre>';print_r($_GET);echo '</pre>';die;
         $code = $_GET['code'];
         $data = $this->getAccessToken($code);
-        //获取用户信息
-        $user_info = $this->getUserInfo($data['access_token'], $data['openid']);
-        //保存用户信息
-        $userinfo_key = 'h:u:'.$data['openid'];
-        Redis::hMset($userinfo_key,$user_info);
+        //判断用户是否已经存在
+        $openid = $data['openid'];
+        $u = KcModel::where(['openid'=>$openid])->first();
+        if($u){   //用户已存在
+            $user_info = $u->toArray();
+        }else{
+            //获取用户信息
+            $user_info = $this->getUserInfo($data['access_token'], $data['openid']);
+            //入库用户信息
+            WxUserModel::insertGetId($user_info);
+        }
+
+        $data = [
+            'u' => $user_info
+        ];
+        return view('stration.indexs',$data);
     }
+
+
 
 
     /**
@@ -30,7 +44,6 @@ class AdministrationController extends Controller
         $json_data = file_get_contents($url);
         return json_decode($json_data, true);
     }
-
 
     /**
      * 获取用户基本信息

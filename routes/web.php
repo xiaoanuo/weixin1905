@@ -46,7 +46,8 @@ Route::get('/goods/detail','Goods\\IndexController@detail');    //商品详情
 
 
 Route::get('/curriculum','CurriculumController@index');    //课程
-Route::get('/Administration','AdministrationController@index');    //管理
+Route::get('/index','AdministrationController@index');    //管理
+Route::post('/add','AdministrationController@add');    //管理
 
 
 

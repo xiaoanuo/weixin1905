@@ -8,7 +8,7 @@ class AdministrationController extends Controller
 {
     public function index()
     {
-                echo '<pre>';print_r($_GET);echo '</pre>';die;
+        echo '<pre>';print_r($_GET);echo '</pre>';die;
         $code = $_GET['code'];
         $data = $this->getAccessToken($code);
         //获取用户信息

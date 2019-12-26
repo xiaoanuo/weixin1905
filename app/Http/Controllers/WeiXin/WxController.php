@@ -279,7 +279,7 @@ class WxController extends Controller
         $url4 = 'http://1905wx.xiaoanuo.com/Administration';
         $redirect_url = urlencode($url);       //授权后跳转专业面
         $redirect_urls = urlencode($url2);       //授权后跳商城页面
-        $redirect_url4 = urlencode($url4);       //授权后跳商城页面
+        $redirect_url4 = urlencode($url4);
 
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu = [

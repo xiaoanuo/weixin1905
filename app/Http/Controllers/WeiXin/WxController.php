@@ -90,12 +90,11 @@ class WxController extends Controller
         $event = $xml_obj->Event;   //获取事件类型
 //        dd($event);
         $openid = $xml_obj->FromUserName;          //获取用户的openid
-        dd($openid);
         if($event == 'subscribe'){
 
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-                $msg ='欢迎回来';
+                $msg ='欢迎'.$p['nickname'].'回来';
                 $xml = '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->fromUser.']]></FromUserName>

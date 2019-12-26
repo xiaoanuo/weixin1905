@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp\Client;
-use Illuminate\Support\Str;
 class WxController extends Controller
 {
     protected $access_token;
@@ -88,11 +87,13 @@ class WxController extends Controller
         $xml_obj = simplexml_load_string($xml_str);
 
         $event = $xml_obj->Event;   //获取事件类型
+//        dd($event);
         $openid = $xml_obj->FromUserName;          //获取用户的openid
         if($event == 'subscribe'){
+
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-                $msg ='欢迎'.$p['nickname'].'回来';
+                $msg ='欢迎'.$p['nickname'].'回家';
                 $xml = '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->fromUser.']]></FromUserName>
@@ -147,6 +148,8 @@ class WxController extends Controller
 <Content><![CDATA['.date('Y-m-d H:i:s'). $msg .']]></Content>
 </xml>';
                 echo $response_xml;
+            }elseif($xml_obj->EventKey=='curriculum'){
+
             }
         }
 
@@ -273,26 +276,23 @@ class WxController extends Controller
     {
         $url = 'http://1905wx.xiaoanuo.com/vote';
         $url2 = 'http://1905wx.xiaoanuo.com/';
+        $url4 = 'http://1905wx.xiaoanuo.com/Administration';
         $redirect_url = urlencode($url);       //授权后跳转专业面
         $redirect_urls = urlencode($url2);       //授权后跳商城页面
+        $redirect_url4 = urlencode($url4);
 
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu = [
             'button' =>[
                 [
                     'type' => 'click',
-                    'name' => '获取天气',
-                    'key' => 'weather'
+                    'name' => '查看课程',
+                    'key' => 'curriculum'
                 ],
                 [
                     'type' => 'view',
-                    'name' => '投票',
-                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b138a4006e174c7&redirect_uri='.$redirect_url.'&response_type=code&scope=snsapi_userinfo&state=wx1905#wechat_redirect'
-                ],
-                [
-                    'type' => 'view',
-                    'name' => '商城',
-                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b138a4006e174c7&redirect_uri='.$redirect_urls.'&response_type=code&scope=snsapi_userinfo&state=wx1905#wechat_redirect'
+                    'name' => '课程管理',
+                    'url' => 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b138a4006e174c7&redirect_uri='.$redirect_url4.'&response_type=code&scope=snsapi_userinfo&state=wx1905#wechat_redirect'
                 ],
             ]
         ];
@@ -317,6 +317,7 @@ class WxController extends Controller
         $log_file = 'wx_user.log';
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
+
 
 
 }

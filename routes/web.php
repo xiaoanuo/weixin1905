@@ -45,6 +45,10 @@ Route::get('/wx/tasks','PlanningController@sendMsg');    //计划任务
 Route::get('/goods/detail','Goods\\IndexController@detail');    //商品详情
 
 
+Route::get('/curriculum','CurriculumController@index');    //课程
+Route::get('/Administration','AdministrationController@index');    //管理
+
+
 
 
 

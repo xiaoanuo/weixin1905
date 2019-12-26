@@ -95,7 +95,7 @@ class WxController extends Controller
 
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
-                $msg ='欢迎'.$p['nickname'].'回来';
+                $msg ='欢迎回来';
                 $xml = '<xml>
                           <ToUserName><![CDATA['.$openid.']]></ToUserName>
                           <FromUserName><![CDATA['.$xml_obj->fromUser.']]></FromUserName>

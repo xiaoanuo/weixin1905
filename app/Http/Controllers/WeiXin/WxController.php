@@ -88,10 +88,8 @@ class WxController extends Controller
         $xml_obj = simplexml_load_string($xml_str);
 
         $event = $xml_obj->Event;   //获取事件类型
-//        dd($event);
         $openid = $xml_obj->FromUserName;          //获取用户的openid
         if($event == 'subscribe'){
-
             $p = WxUserModel::where(['openid'=>$openid])->first();
             if($p){
                 $msg ='欢迎'.$p['nickname'].'回来';

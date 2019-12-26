@@ -9,25 +9,17 @@ class AdministrationController extends Controller
 {
     public function index()
     {
-        echo '<pre>';print_r($_GET);echo '</pre>';die;
-        $code = $_GET['code'];
-        $data = $this->getAccessToken($code);
-        //判断用户是否已经存在
-        $openid = $data['openid'];
-        $u = KcModel::where(['openid'=>$openid])->first();
-        if($u){   //用户已存在
-            $user_info = $u->toArray();
-        }else{
-            //获取用户信息
-            $user_info = $this->getUserInfo($data['access_token'], $data['openid']);
-            //入库用户信息
-            WxUserModel::insertGetId($user_info);
-        }
+        return view('stration.indexs');
+    }
 
-        $data = [
-            'u' => $user_info
-        ];
-        return view('stration.indexs',$data);
+    public function add(Request $request)
+    {
+        $data = $request->input();
+        $res = KcModel::insertGetId($data);
+        dd($res);
+        if(!$res){
+            echo '添加成功';
+        }
     }
 
 
